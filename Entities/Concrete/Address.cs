@@ -10,6 +10,7 @@ namespace Entities.Concrete
     public class Address : IEntity
     {
         public long AdressId { get; set; }
+        public long UserId { get; set; }
         public string City { get; set; }
         public string District { get; set; }
         public string Neighboorhood { get; set; }

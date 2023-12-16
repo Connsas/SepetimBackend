@@ -10,6 +10,7 @@ namespace Entities.Concrete
     public class RegisteredCard: IEntity
     {
         public long RegisteredCardId { get; set; }
+        public long UserId { get; set; }
         public string PaymentName { get; set; }
         public long CardNumber { get; set; }
         public string ExpDate { get; set; }
