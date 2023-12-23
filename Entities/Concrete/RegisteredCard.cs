@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Entities.Abstract;
+using Core.Entities.Abstract;
 
 namespace Entities.Concrete
 {
@@ -12,8 +12,8 @@ namespace Entities.Concrete
         public long RegisteredCardId { get; set; }
         public long UserId { get; set; }
         public string PaymentName { get; set; }
-        public long CardNumber { get; set; }
-        public string ExpDate { get; set; }
-        public short CVV { get; set; }
+        public byte[] CardNumber { get; set; }
+        public byte[] ExpDate { get; set; }
+        public byte[] CVV { get; set; }
     }
 }

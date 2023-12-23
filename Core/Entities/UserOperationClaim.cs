@@ -6,12 +6,12 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Core.Entities
 {
-    public class Cart: IEntity
+    public class UserOperationClaim: IEntity
     {
-       public long CartId { get; set; }
+        public long Id { get; set; }
         public long UserId { get; set; }
-        public long Product { get; set; }
+        public short OperationClaimId { get; set; }
     }
 }
