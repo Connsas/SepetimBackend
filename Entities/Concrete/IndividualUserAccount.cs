@@ -9,6 +9,6 @@ namespace Entities.Concrete
 {
     public class IndividualUserAccount: UserAccount
     {
-        public long IdentificationNumber { get; set; }
+        public long NationalId { get; set; }
     }
 }
