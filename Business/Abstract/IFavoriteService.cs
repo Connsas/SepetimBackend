@@ -7,6 +7,5 @@ public interface IFavoriteService
 {
     IResult Add(Favorite favorite);
     IResult Delete(Favorite favorite);
-    IResult Update(Favorite favorite);
     IDataResult<List<Favorite>> GetAll();
 }
