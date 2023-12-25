@@ -76,5 +76,9 @@ namespace Business.Constants
         {
             public static string Added = "Ticket successfully created.";
         }
+        public struct AuthMessages
+        {
+            public static string AuthDenied = "User haven't got claim for process";
+        }
     }
 }
