@@ -1,12 +1,10 @@
-﻿using Entities.Concrete;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Entities.Abstract;
 
-namespace Entities.Abstract
+namespace Core.Entities
 {
     public abstract class UserAccount : IEntity
     {
