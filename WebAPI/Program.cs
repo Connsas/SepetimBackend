@@ -1,3 +1,8 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Business.DependecyResolvers.Autofac;
+using Microsoft.AspNetCore.Hosting;
+
 namespace WebAPI
 {
     public class Program
@@ -12,6 +17,12 @@ namespace WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureContainer<ContainerBuilder>(
+                    builder =>
+                    {
+                        builder.RegisterModule(new AutofacBusinessModule());
+                    });
 
             var app = builder.Build();
 
