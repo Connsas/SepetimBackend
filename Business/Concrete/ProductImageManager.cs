@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -16,6 +18,7 @@ public class ProductImageManager : IProductImageService
         _productImageDal = productImageDal;
     }
 
+    [ValidationAspect(typeof(ProductImageValidator))]
     public IResult Add(ProductImage productImage)
     {
         _productImageDal.Add(productImage);

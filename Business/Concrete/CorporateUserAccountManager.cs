@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,6 +20,7 @@ public class CorporateUserAccountManager : ICorporateUserAccountService
         _corporateUserAccountDal = corporateUserAccountDal;
     }
 
+    [ValidationAspect(typeof(CorporateUserAccountValidator))]
     public IResult Add(CorporateUserAccount corporateUserAccount)
     {
         _corporateUserAccountDal.Add(corporateUserAccount);
