@@ -1,7 +1,14 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependecyResolvers.Autofac;
+using Core.DependencyResolvers;
+using Core.Utilities.Extensions;
+using Core.Utilities.IoC;
+using Core.Utilities.Security.Encryption;
+using Core.Utilities.Security.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI
 {
@@ -12,6 +19,30 @@ namespace WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                    };
+                });
+
+            builder.Services.AddCors();
+
+            builder.Services.AddDependencyResolvers(new ICoreModule[]
+            {
+                new CoreModule()
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -33,7 +64,13 @@ namespace WebAPI
                 app.UseSwaggerUI();
             }
 
+            app.ConfigureCustomExceptionMiddleware();
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
+
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
