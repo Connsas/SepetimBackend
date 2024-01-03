@@ -18,9 +18,9 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("add")]
-        public ActionResult Add(ProductImage productImage)
+        public ActionResult Add([FromForm]IFormFile formFile,[FromForm]ProductImage productImage, long productId)
         {
-            var result = _productImageService.Add(productImage);
+            var result = _productImageService.Add(formFile,productImage,productId);
             if (result.Success)
             {
                 return Ok(result.Message);
