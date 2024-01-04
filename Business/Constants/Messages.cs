@@ -78,7 +78,13 @@ namespace Business.Constants
         }
         public struct AuthMessages
         {
-            public static string AuthDenied = "User haven't got claim for process";
+            public static string AuthDenied = "User haven't got claim for process.";
+            public static string UserNotFound = "Any user not found using this email.";
+            public static string IncorrectInformation = "Email or password is incorrect.";
+            public static string LoginSuccess = "Login attempt is success.";
+            public static string UserAlreadyExist = "User using this email is already exist.";
+            public static string UserRegisterSuccess = "User successfully registered";
+            public static string AccessTokenCreated = "Token creation is success";
         }
     }
 }

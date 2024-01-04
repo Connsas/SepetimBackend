@@ -19,6 +19,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(i => i.PasswordSalt).NotNull();
             RuleFor(i => i.Surname).NotNull();
             RuleFor(i => i.PhoneNumber).NotNull();
+            RuleFor(i => i.IsVerified).NotNull();
         }
     }
 }

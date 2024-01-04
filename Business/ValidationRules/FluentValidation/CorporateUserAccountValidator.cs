@@ -20,6 +20,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(c => c.PasswordHash).NotEmpty();
             RuleFor(c => c.PasswordSalt).NotEmpty();
             RuleFor(c => c.PhoneNumber).NotEmpty();
+            RuleFor(c => c.IsVerified).NotNull();
         }
     }
 }

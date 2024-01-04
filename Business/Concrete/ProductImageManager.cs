@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Helpers.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -26,6 +27,11 @@ public class ProductImageManager : IProductImageService
     [ValidationAspect(typeof(ProductImageValidator))]
     public IResult Add(IFormFile formFile,ProductImage productImage, long productId)
     {
+        IResult result = BusinessRules.Run(checkFileIsEmpty(formFile));
+        if (!result.Success)
+        {
+            return new ErrorResult("Something went wrong.");
+        }
 
         string filePath;
         filePath = _fileHelper.CreateFile(formFile, Path).Data;
@@ -55,5 +61,7 @@ public class ProductImageManager : IProductImageService
         {
             return new ErrorResult("Image can not be empty");
         }
+
+        return new SuccessResult();
     }
 }
