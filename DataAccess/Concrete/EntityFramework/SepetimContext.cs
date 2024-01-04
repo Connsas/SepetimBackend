@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entities;
-using Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Entities.Concrete;
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Utilities.Results;
+using Core.Utilities.Security.JWT;
 using Entities.Concrete;
 using Entities.Dtos;
 
@@ -12,9 +13,11 @@ namespace Business.Abstract
 {
     public interface AuthService
     {
-        public IDataResult<UserAccount> login(UserForLoginDto userForLoginDto);
-        public IDataResult<IndividualUserAccount> registerIndividual(IndividualUserForRegisterDto individualUserForRegisterDto);
-        public IDataResult<CorporateUserAccount> registerCorporate(CorporateUserForRegisterDto corporateUserForRegister);
+        public IDataResult<UserAccount> Login(UserForLoginDto userForLoginDto);
+        public IDataResult<IndividualUserAccount> RegisterIndividual(IndividualUserForRegisterDto individualUserForRegisterDto);
+        public IDataResult<CorporateUserAccount> RegisterCorporate(CorporateUserForRegisterDto corporateUserForRegister);
         public IResult VerifyTCNO(TCNOVerifyDto tcnoVerifyDto);
+        public IDataResult<AccessToken> CreateAccessToken(UserAccount userAccount);
+        public IDataResult<UserAccount> UserExists(string email);
     }
 }

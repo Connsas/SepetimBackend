@@ -37,7 +37,7 @@ namespace Business.Concrete
             _tokenHelper = tokenHelper;
         }
 
-        public IDataResult<UserAccount> login(UserForLoginDto userForLoginDto)
+        public IDataResult<UserAccount> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userAccountService.GetByMail(userForLoginDto.Email);
             if (userToCheck == null)
@@ -54,7 +54,7 @@ namespace Business.Concrete
             return new SuccessDataResult<UserAccount>(userToCheck.Data, LoginSuccess);
         }
 
-        public IDataResult<IndividualUserAccount> registerIndividual(IndividualUserForRegisterDto individualUserForRegisterDto)
+        public IDataResult<IndividualUserAccount> RegisterIndividual(IndividualUserForRegisterDto individualUserForRegisterDto)
         {
             var userExist = _userAccountService.GetByMail(individualUserForRegisterDto.Email);
             if (userExist.Success)
@@ -78,9 +78,9 @@ namespace Business.Concrete
             return new SuccessDataResult<IndividualUserAccount>(individualUser, UserRegisterSuccess);
         }
 
-        public IDataResult<CorporateUserAccount> registerCorporate(CorporateUserForRegisterDto corporateUserForRegister)
+        public IDataResult<CorporateUserAccount> RegisterCorporate(CorporateUserForRegisterDto corporateUserForRegister)
         {
-            var userExist = _userAccountService.GetByMail(corporateUserForRegister.Email);
+            var userExist = UserExists(corporateUserForRegister.Email);
             if (userExist.Success)
             {
                 return new ErrorDataResult<CorporateUserAccount>(UserAlreadyExist);
@@ -113,6 +113,17 @@ namespace Business.Concrete
             var claims = _userAccountService.GetClaims(userAccount);
             var accessToken = _tokenHelper.CreateToken(userAccount, claims.Data);
             return new SuccessDataResult<AccessToken>(accessToken, AccessTokenCreated);
+        }
+
+        public IDataResult<UserAccount> UserExists(string email)
+        {
+            var userExists = _userAccountService.GetByMail(email);
+            if (userExists.Success)
+            {
+                return new SuccessDataResult<UserAccount>(userExists.Data);
+            }
+
+            return new ErrorDataResult<UserAccount>(userExists.Message);
         }
     }
 }
