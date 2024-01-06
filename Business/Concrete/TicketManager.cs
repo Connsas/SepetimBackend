@@ -13,6 +13,11 @@ public class TicketManager : ITicketService
     private ITicketDal _ticketDal;
     private string AddedMessage = Messages.TicketMessages.Added;
 
+    public TicketManager(ITicketDal ticketDal)
+    {
+        _ticketDal = ticketDal;
+    }
+
     [ValidationAspect(typeof(TicketValidator))]
     public IResult Add(Ticket ticket)
     {

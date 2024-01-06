@@ -11,8 +11,8 @@ namespace Entities.Concrete
     {
         public long OrderId { get; set; }
         public long UserId { get; set; }
-        public long Product { get; set; }
-        public decimal ProductCost { get; set; }
+        public long ProductId { get; set; }
+        public decimal ProductPrice { get; set; }
         public DateTime OrderDate { get; set; }
     }
 }

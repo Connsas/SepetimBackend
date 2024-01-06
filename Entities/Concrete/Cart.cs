@@ -12,6 +12,6 @@ namespace Entities.Concrete
     {
        public long CartId { get; set; }
         public long UserId { get; set; }
-        public long Product { get; set; }
+        public long ProductId { get; set; }
     }
 }

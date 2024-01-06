@@ -15,7 +15,7 @@ using TCKimlikDogrulama;
 
 namespace Business.Concrete
 {
-    public class AuthManager : AuthService
+    public class AuthManager : IAuthService
     {
         private IUserAccountService _userAccountService;
         private IIndividualUserAccountService _individualUserAccountService;

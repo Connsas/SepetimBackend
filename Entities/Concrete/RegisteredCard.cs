@@ -14,6 +14,6 @@ namespace Entities.Concrete
         public string PaymentName { get; set; }
         public byte[] CardNumber { get; set; }
         public byte[] ExpDate { get; set; }
-        public byte[] CVV { get; set; }
+        public byte[] Cvv { get; set; }
     }
 }

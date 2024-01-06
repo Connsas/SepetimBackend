@@ -11,7 +11,7 @@ using Entities.Dtos;
 
 namespace Business.Abstract
 {
-    public interface AuthService
+    public interface IAuthService
     {
         public IDataResult<UserAccount> Login(UserForLoginDto userForLoginDto);
         public IDataResult<IndividualUserAccount> RegisterIndividual(IndividualUserForRegisterDto individualUserForRegisterDto);

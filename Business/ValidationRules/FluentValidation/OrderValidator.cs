@@ -11,9 +11,9 @@ namespace Business.ValidationRules.FluentValidation
     {
         public OrderValidator()
         {
-            RuleFor(o => o.Product).NotEmpty();
+            RuleFor(o => o.ProductId).NotEmpty();
             RuleFor(o => o.OrderDate).NotEmpty();
-            RuleFor(o => o.ProductCost).NotEmpty();
+            RuleFor(o => o.ProductPrice).NotEmpty();
             RuleFor(o => o.UserId).NotEmpty();
         }
     }

@@ -11,6 +11,11 @@ namespace WebAPI.Controllers
     {
         private ICartService _cartService;
 
+        public CartController(ICartService cartService)
+        {
+            _cartService = cartService;
+        }
+
         [HttpPost("add")]
         public ActionResult Add(Cart cart)
         {
