@@ -55,7 +55,18 @@ namespace WebAPI.Controllers
             var result = _productService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("getbycategory")]
+        public ActionResult GetByCategory(int categoryId)
+        {
+            var result = _productService.GetByCategory(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
             }
             return BadRequest(result.Message);
         }

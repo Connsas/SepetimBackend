@@ -49,13 +49,24 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("get")]
+        public ActionResult Get(int categoryId)
+        {
+            var result = _categoryService.Get(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
         [HttpGet("getall")]
         public ActionResult GetAll()
         {
             var result = _categoryService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return BadRequest(result.Message);
         }

@@ -22,7 +22,7 @@ public class ProductManager : IProductService
     }
 
     [ValidationAspect(typeof(ProductValidator))]
-    [CacheRemoveAspect("Get")]
+    //[CacheRemoveAspect("Get")]
     public IResult Add(Product product)
     {
         _productDal.Add(product);
@@ -40,9 +40,14 @@ public class ProductManager : IProductService
         _productDal.Update(product);
         return new SuccessResult(UpdatedMessage);
     }
-    [CacheAspect]
+    //[CacheAspect]
     public IDataResult<List<Product>> GetAll()
     {
         return new SuccessDataResult<List<Product>>(_productDal.GetAll());
+    }
+
+    public IDataResult<List<Product>> GetByCategory(int categoryId)
+    {
+        return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId));
     }
 }

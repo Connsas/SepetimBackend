@@ -9,4 +9,5 @@ public interface IProductService
     IResult Delete(Product product);
     IResult Update(Product product);
     IDataResult<List<Product>> GetAll();
+    IDataResult<List<Product>> GetByCategory(int id);
 }

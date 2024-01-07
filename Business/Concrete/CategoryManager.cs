@@ -38,6 +38,11 @@ public class CategoryManager : ICategoryService
         return new SuccessResult(UpdatedMessage);
     }
 
+    public IDataResult<Category> Get(int categoryId)
+    {
+        return new SuccessDataResult<Category>(_categoryDal.Get(c => c.CategoryId == categoryId));
+    }
+
     public IDataResult<List<Category>> GetAll()
     {
         return new SuccessDataResult<List<Category>>(_categoryDal.GetAll());
