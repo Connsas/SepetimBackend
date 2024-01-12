@@ -24,7 +24,7 @@ namespace DataAccess.Concrete.EntityFramework
                     select new OperationClaim
                     {
                         OperationClaimId = operationClaim.OperationClaimId,
-                        OpertaionClaimName = operationClaim.OpertaionClaimName
+                        OperationClaimName = operationClaim.OperationClaimName
                     };
                 var resultList = result.ToList();
                 return resultList;

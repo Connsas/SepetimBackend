@@ -9,4 +9,6 @@ public interface IIndividualUserAccountService
     IResult Delete(IndividualUserAccount individualUserAccount);
     IResult Update(IndividualUserAccount individualUserAccount);
     IDataResult<List<IndividualUserAccount>> GetAll();
+    IDataResult<IndividualUserAccount> GetById(long id);
+    IResult CheckIfNationalityNumberExists (long nationalityNumber);
 }

@@ -11,6 +11,7 @@ namespace Entities.Concrete
     {
         public long ProductId { get; set; }
         public long CategoryId { get; set; }
+        public long SupplierId { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public int StockAmount { get; set; }

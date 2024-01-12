@@ -14,7 +14,7 @@ namespace DataAccess.Concrete.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"Host=localhost;Database=Sepetim;Username=postgres;Password=4435");
+            optionsBuilder.UseNpgsql(@"Host=localhost;Database=Sepetim;Username=postgres;Password=4435;Include Error Details=true");
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

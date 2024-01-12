@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Constants;
 using Core.Entities;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
@@ -20,6 +21,7 @@ namespace Business.Concrete
         private IUserAccountService _userAccountService;
         private IIndividualUserAccountService _individualUserAccountService;
         private ICorporateUserAccountService _corporateUserAccountService;
+        private IUserOperationClaimService _userOperationClaimService;
         private ITokenHelper _tokenHelper;
         
         private string UserNotFound = Messages.AuthMessages.UserNotFound;
@@ -29,12 +31,13 @@ namespace Business.Concrete
         private string UserRegisterSuccess = Messages.AuthMessages.UserRegisterSuccess;
         private string AccessTokenCreated = Messages.AuthMessages.AccessTokenCreated;
 
-        public AuthManager(IUserAccountService userAccountService, IIndividualUserAccountService individualUserAccountService, ICorporateUserAccountService corporateUserAccountService, ITokenHelper tokenHelper)
+        public AuthManager(IUserAccountService userAccountService, IIndividualUserAccountService individualUserAccountService, ICorporateUserAccountService corporateUserAccountService, ITokenHelper tokenHelper, IUserOperationClaimService userOperationClaimService)
         {
             _userAccountService = userAccountService;
             _individualUserAccountService = individualUserAccountService;
             _corporateUserAccountService = corporateUserAccountService;
             _tokenHelper = tokenHelper;
+            _userOperationClaimService = userOperationClaimService;
         }
 
         public IDataResult<UserAccount> Login(UserForLoginDto userForLoginDto)
@@ -56,8 +59,8 @@ namespace Business.Concrete
 
         public IDataResult<IndividualUserAccount> RegisterIndividual(IndividualUserForRegisterDto individualUserForRegisterDto)
         {
-            var userExist = _userAccountService.GetByMail(individualUserForRegisterDto.Email);
-            if (userExist.Success)
+            var result = BusinessRules.Run(UserExists(individualUserForRegisterDto.Email), _individualUserAccountService.CheckIfNationalityNumberExists(individualUserForRegisterDto.NationalityId));
+            if (result != null)
             {
                 return new ErrorDataResult<IndividualUserAccount>(UserAlreadyExist);
             }
@@ -75,13 +78,20 @@ namespace Business.Concrete
                 IsVerified = false
             };
             _individualUserAccountService.Add(individualUser);
+            var userForClaimAdd = _individualUserAccountService.GetById(individualUserForRegisterDto.NationalityId);
+            var userOperationClaim = new UserOperationClaim
+            {
+                OperationClaimId = 1,
+                UserId = userForClaimAdd.Data.UserId
+            };
+            _userOperationClaimService.Add(userOperationClaim);
             return new SuccessDataResult<IndividualUserAccount>(individualUser, UserRegisterSuccess);
         }
 
         public IDataResult<CorporateUserAccount> RegisterCorporate(CorporateUserForRegisterDto corporateUserForRegister)
         {
-            var userExist = UserExists(corporateUserForRegister.Email);
-            if (userExist.Success)
+            var result = BusinessRules.Run(UserExists(corporateUserForRegister.Email), _corporateUserAccountService.CheckIfTaxNumberExists(corporateUserForRegister.TaxNumber));
+            if (result != null)
             {
                 return new ErrorDataResult<CorporateUserAccount>(UserAlreadyExist);
             }
@@ -100,6 +110,13 @@ namespace Business.Concrete
                 IsVerified = false
             };
             _corporateUserAccountService.Add(corporateUser);
+            var userForClaimAdd = _corporateUserAccountService.GetById(corporateUserForRegister.TaxNumber);
+            var userOperationClaim = new UserOperationClaim
+            {
+                OperationClaimId = 2,
+                UserId = userForClaimAdd.Data.UserId
+            };
+            _userOperationClaimService.Add(userOperationClaim);
             return new SuccessDataResult<CorporateUserAccount>(corporateUser, UserRegisterSuccess);
         }
 
@@ -120,10 +137,11 @@ namespace Business.Concrete
             var userExists = _userAccountService.GetByMail(email);
             if (userExists.Success)
             {
-                return new SuccessDataResult<UserAccount>(userExists.Data);
+                return new ErrorDataResult<UserAccount>(userExists.Message);
             }
 
-            return new ErrorDataResult<UserAccount>(userExists.Message);
+            return new SuccessDataResult<UserAccount>(userExists.Message);
         }
+
     }
 }

@@ -12,9 +12,8 @@ namespace Entities.Concrete
     [Table("CorporateUserAccounts")]
     public class CorporateUserAccount: UserAccount
     {
-        public long CorporateId { get; set; }
         public string CorporateName { get; set; }
-        public string TaxNumber { get; set; }
+        public long TaxNumber { get; set; }
 
     }
 }

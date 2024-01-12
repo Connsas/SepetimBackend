@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    [Table("UserAccounts")]
     public class UserAccount : IEntity
     {
         [Key]

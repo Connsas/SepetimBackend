@@ -9,4 +9,6 @@ public interface ICorporateUserAccountService
     IResult Delete(CorporateUserAccount corporateUserAccount);
     IResult Update(CorporateUserAccount corporateUserAccount);
     IDataResult<List<CorporateUserAccount>> GetAll();
+    IDataResult<CorporateUserAccount> GetById(long id);
+    IResult CheckIfTaxNumberExists(long taxNumber);
 }

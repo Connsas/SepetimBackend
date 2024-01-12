@@ -9,6 +9,6 @@ namespace Entities.Dtos
     public class CorporateUserForRegisterDto : UserForRegisterDto
     {
         public string CorporateName { get; set; }
-        public string TaxNumber { get; set; }
+        public long TaxNumber { get; set; }
     }
 }

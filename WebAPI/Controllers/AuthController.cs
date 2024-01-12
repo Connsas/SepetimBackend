@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
         public ActionResult RegisterIndividual(IndividualUserForRegisterDto individualUserForRegisterDto)
         {
             var userExist = _authService.UserExists(individualUserForRegisterDto.Email);
-            if (userExist.Success)
+            if (!userExist.Success)
             {
                 return BadRequest(userExist.Message);
             }
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return BadRequest(result.Message);
         }

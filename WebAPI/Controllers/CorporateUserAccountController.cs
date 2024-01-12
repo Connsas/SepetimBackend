@@ -16,17 +16,6 @@ namespace WebAPI.Controllers
             _corporateUserAccountService = corporateUserAccountService;
         }
 
-        [HttpPost("add")]
-        public ActionResult Add(CorporateUserAccount corporateUserAccount)
-        {
-            var result = _corporateUserAccountService.Add(corporateUserAccount);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-            return BadRequest(result.Message);
-        }
-
         [HttpPost("update")]
         public ActionResult Update(CorporateUserAccount corporateUserAccount)
         {

@@ -16,17 +16,6 @@ namespace WebAPI.Controllers
             _individualUserAccountService = individualUserAccountService;
         }
 
-        [HttpPost("add")]
-        public ActionResult Add(IndividualUserAccount individualUserAccount)
-        {
-            var result = _individualUserAccountService.Add(individualUserAccount);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-            return BadRequest(result.Message);
-        }
-
         [HttpPost("update")]
         public ActionResult Update(IndividualUserAccount individualUserAccount)
         {

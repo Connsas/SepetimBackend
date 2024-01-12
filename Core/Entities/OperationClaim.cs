@@ -11,6 +11,6 @@ namespace Core.Entities
     public class OperationClaim: IEntity
     {
         public short OperationClaimId { get; set; }
-        public string OpertaionClaimName { get; set; }
+        public string OperationClaimName { get; set; }
     }
 }
