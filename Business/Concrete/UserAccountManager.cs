@@ -53,6 +53,16 @@ namespace Business.Concrete
             return new ErrorDataResult<UserAccount>();
         }
 
+        public IDataResult<UserAccount> GetById(long id)
+        {
+            var user = _userAccountDal.Get(u => u.UserId == id);
+            if (user != null)
+            {
+                return new SuccessDataResult<UserAccount>(user);
+            }
+            return new ErrorDataResult<UserAccount>("Kullanıcı Bulunamadı");
+        }
+
         public IDataResult<List<OperationClaim>> GetClaims(UserAccount userAccount)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userAccountDal.GetClaims(userAccount));

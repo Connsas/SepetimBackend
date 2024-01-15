@@ -1,9 +1,13 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Business.Abstract;
+using Core.Utilities.Results;
+using Core.Utilities.Security.JWT;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace WebAPI.Controllers
 {
@@ -12,10 +16,12 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private IAuthService _authService;
+        private IUserAccountService _userAccountService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserAccountService userAccountService)
         {
             _authService = authService;
+            _userAccountService = userAccountService;
         }
 
         [HttpPost("login")]
@@ -33,7 +39,9 @@ namespace WebAPI.Controllers
                 var token = new JwtSecurityTokenHandler().ReadJwtToken(result.Data.Token);
                 var identity = (ClaimsIdentity)User.Identity;
                 identity.AddClaims(token.Claims);
-                return Ok(result);
+                var userId = _userAccountService.GetByMail(userForLoginDto.Email).Data.UserId;
+                LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result,userId);
+                return Ok(loginRegisterResult);
             }
 
             return BadRequest(result.Message);
@@ -50,9 +58,11 @@ namespace WebAPI.Controllers
 
             var registerResult = _authService.RegisterIndividual(individualUserForRegisterDto);
             var result = _authService.CreateAccessToken(registerResult.Data);
+            var userId = _userAccountService.GetByMail(individualUserForRegisterDto.Email).Data.UserId;
+            LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result, userId);
             if (result.Success)
             {
-                return Ok(result);
+                return Ok(loginRegisterResult);
             }
             return BadRequest(result.Message);
         }
@@ -68,9 +78,11 @@ namespace WebAPI.Controllers
 
             var registerResult = _authService.RegisterCorporate(corporateUserForRegisterDto);
             var result = _authService.CreateAccessToken(registerResult.Data);
+            var userId = _userAccountService.GetByMail(corporateUserForRegisterDto.Email).Data.UserId;
+            LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result, userId);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(loginRegisterResult);
             }
             return BadRequest(result.Message);
         }

@@ -5,6 +5,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.Entities;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 
 namespace Business.Concrete;
@@ -56,13 +57,30 @@ public class IndividualUserAccountManager : IIndividualUserAccountService
 
     public IDataResult<IndividualUserAccount> GetById(long id)
     {
-        return new SuccessDataResult<IndividualUserAccount>(_individualUserAccountDal.Get(i => i.NationalId == id));
+        var user = (_individualUserAccountDal.Get(i => i.NationalId == id));
+        if (user != null)
+        {
+            return new SuccessDataResult<IndividualUserAccount>(user);
+        }
+
+        return new ErrorDataResult<IndividualUserAccount>(user);
     }
 
     public IResult CheckIfNationalityNumberExists(long nationalityNumber)
     {
         var result = _individualUserAccountDal.Get(i => i.NationalId == nationalityNumber);
         if (result == null)
+        {
+            return new SuccessResult();
+        }
+
+        return new ErrorResult();
+    }
+
+    public IResult GetByUserId(long id)
+    {
+        var user = (_individualUserAccountDal.Get(i => i.UserId == id));
+        if (user != null)
         {
             return new SuccessResult();
         }

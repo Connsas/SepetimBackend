@@ -10,5 +10,6 @@ public interface ICorporateUserAccountService
     IResult Update(CorporateUserAccount corporateUserAccount);
     IDataResult<List<CorporateUserAccount>> GetAll();
     IDataResult<CorporateUserAccount> GetById(long id);
+    public IResult GetByUserId(long id);
     IResult CheckIfTaxNumberExists(long taxNumber);
 }

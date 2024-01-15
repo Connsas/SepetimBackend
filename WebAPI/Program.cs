@@ -1,3 +1,4 @@
+using System.Net.Security;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependecyResolvers.Autofac;
@@ -7,8 +8,11 @@ using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -32,9 +36,9 @@ namespace WebAPI
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
                         ValidIssuer = tokenOptions.Issuer,
                         ValidAudience = tokenOptions.Audience,
-                        ValidateIssuerSigningKey = true,
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
@@ -75,7 +79,6 @@ namespace WebAPI
             app.UseAuthentication();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

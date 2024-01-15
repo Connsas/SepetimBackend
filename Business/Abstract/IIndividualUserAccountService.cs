@@ -10,5 +10,6 @@ public interface IIndividualUserAccountService
     IResult Update(IndividualUserAccount individualUserAccount);
     IDataResult<List<IndividualUserAccount>> GetAll();
     IDataResult<IndividualUserAccount> GetById(long id);
+    public IResult GetByUserId(long id);
     IResult CheckIfNationalityNumberExists (long nationalityNumber);
 }

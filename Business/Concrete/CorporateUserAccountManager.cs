@@ -53,13 +53,30 @@ public class CorporateUserAccountManager : ICorporateUserAccountService
 
     public IDataResult<CorporateUserAccount> GetById(long id)
     {
-        return new SuccessDataResult<CorporateUserAccount>(_corporateUserAccountDal.Get(c => c.TaxNumber == id));
+        var user = _corporateUserAccountDal.Get(c => c.TaxNumber == id);
+        if (user != null)
+        {
+            return new SuccessDataResult<CorporateUserAccount>(user);
+        }
+
+        return new ErrorDataResult<CorporateUserAccount>(user);
     }
 
     public IResult CheckIfTaxNumberExists(long taxNumber)
     {
         var result = _corporateUserAccountDal.Get(c => c.TaxNumber == taxNumber);
         if (result == null)
+        {
+            return new SuccessResult();
+        }
+
+        return new ErrorResult();
+    }
+
+    public IResult GetByUserId(long id)
+    {
+        var user = (_corporateUserAccountDal.Get(i => i.UserId == id));
+        if (user != null)
         {
             return new SuccessResult();
         }
