@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +23,9 @@ namespace WebAPI.Controllers
             var result = _favoriteService.Add(favorite);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("delete")]
@@ -33,9 +34,9 @@ namespace WebAPI.Controllers
             var result = _favoriteService.Delete(favorite);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet("getall")]
@@ -44,9 +45,27 @@ namespace WebAPI.Controllers
             var result = _favoriteService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyuserid")]
+        public ActionResult GetBtUserId(long userId)
+        {
+            var result = _favoriteService.GetByUserId(userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("checkifinfavorite")]
+        public ActionResult CheckIfInFavorite(long userId, long productId)
+        {
+            var result = _favoriteService.CheckIfInFavorite(userId, productId);
+            return Ok(result);
         }
     }
 }

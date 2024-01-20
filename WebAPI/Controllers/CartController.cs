@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +23,9 @@ namespace WebAPI.Controllers
             var result = _cartService.Add(cart);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("update")]
@@ -33,9 +34,9 @@ namespace WebAPI.Controllers
             var result = _cartService.Update(cart);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("delete")]
@@ -44,9 +45,20 @@ namespace WebAPI.Controllers
             var result = _cartService.Delete(cart);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
+        }
+
+        [HttpPost("deleteall")]
+        public ActionResult DeleteAll(NumberRequestDto request)
+        {
+            var result = _cartService.DeleteAll(request.UserId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         [HttpGet("getall")]
@@ -55,10 +67,21 @@ namespace WebAPI.Controllers
             var result = _cartService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyuserid")]
+        public ActionResult GetByUserId(long id)
+        {
+            var result = _cartService.GetByUserId(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

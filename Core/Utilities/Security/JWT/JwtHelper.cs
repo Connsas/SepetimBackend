@@ -1,12 +1,14 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
-using Castle.Core.Configuration;
+using System.Text;
 using Core.Entities;
 using Core.Utilities.Extensions;
 using Core.Utilities.Security.Encryption;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Core.Utilities.Security.JWT;
 
@@ -46,7 +48,7 @@ public class JwtHelper : ITokenHelper
             audience: tokenOptions.Audience,
             expires: _accessTokenExpiration,
             notBefore: DateTime.Now,
-            claims: SetClaims(user, operationClaims),
+            claims: (SetClaims(user, operationClaims)),
             signingCredentials: signingCredentials
         );
         return jwt;

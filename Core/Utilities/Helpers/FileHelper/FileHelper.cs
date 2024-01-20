@@ -1,10 +1,14 @@
 ﻿using Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.IO;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Core.Utilities.Helpers.FileHelper
 {
@@ -31,15 +35,22 @@ namespace Core.Utilities.Helpers.FileHelper
 
             return new SuccessDataResult<string>(filePath, "File sucessfully created");
         }
-        public IResult DeleteFile(string filePath)
+        public IResult DeleteFile(string filePath , string fullPath)
         {
-            string _filePath = Path.GetFullPath(filePath);
+            string _filePath = fullPath + filePath;
             if (!File.Exists(_filePath))
             {
                 return new ErrorResult("File path not found.");
             }
             File.Delete(_filePath);
             return new SuccessResult("File sucessfully deleted");
+        }
+
+        public string GetImage(string imagePath)
+        {
+            byte[] bytes = File.ReadAllBytes(imagePath);
+            string image = Convert.ToBase64String(bytes);
+            return image;
         }
     }
 }

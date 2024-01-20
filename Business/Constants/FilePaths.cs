@@ -8,6 +8,6 @@ namespace Business.Constants
 {
     public class FilePaths
     {
-        public static string imagePath = "C:\\Users\\Ismail\\Source\\Repos\\SepetimBackend\\Resources\\Images";
+        public static string imagePath = "C:\\Users\\Ismail\\Source\\Repos\\SepetimBackend\\Resources\\Images\\";
     }
 }

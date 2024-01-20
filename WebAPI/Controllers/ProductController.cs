@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace WebAPI.Controllers
     public class ProductController : ControllerBase
     {
         private IProductService _productService;
+
 
         public ProductController(IProductService productService)
         {
@@ -22,9 +24,10 @@ namespace WebAPI.Controllers
             var result = _productService.Add(product);
             if (result.Success)
             {
-                return Ok(result.Message);
+                var newResult = _productService.GetProductForAddImage(product.ProductName, product.SupplierId);
+                return Ok(newResult);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("update")]
@@ -60,6 +63,17 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("getallwithimages")]
+        public ActionResult GetAllWithImages()
+        {
+            var result = _productService.GetAllWithImages();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpGet("getbycategory")]
         public ActionResult GetByCategory(int categoryId)
         {
@@ -69,6 +83,17 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
             return BadRequest(result.Message);
+        }
+
+        [HttpGet("getbyproductid")]
+        public ActionResult GetByProductId(long productId)
+        {
+            var result = _productService.GetByProductId(productId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

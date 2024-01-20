@@ -4,22 +4,29 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Helpers.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace Business.Concrete;
 
 public class ProductManager : IProductService
 {
     private IProductDal _productDal;
+    private IFavoriteService _favoriteService;
+    private FileHelper _fileHelper;
+
     private string AddedMessage = Messages.ProductMessages.Added;
     private string RemovedMessage = Messages.ProductMessages.Removed;
     private string UpdatedMessage = Messages.ProductMessages.Updated;
+    private string imagePath = FilePaths.imagePath;
 
-    public ProductManager(IProductDal productDal)
+    public ProductManager(IProductDal productDal, FileHelper fileHelper)
     {
         _productDal = productDal;
+        _fileHelper = fileHelper;
     }
 
     [ValidationAspect(typeof(ProductValidator))]
@@ -47,8 +54,29 @@ public class ProductManager : IProductService
         return new SuccessDataResult<List<Product>>(_productDal.GetAll());
     }
 
-    public IDataResult<List<Product>> GetByCategory(int categoryId)
+    public IDataResult<List<ProductsWithImagesDto>> GetAllWithImages()
     {
-        return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId));
+        var resultList = _productDal.GetProductsWithImages();
+        foreach (var result in resultList)
+        {
+            result.Image = _fileHelper.GetImage(imagePath + result.Image);
+        }
+        return new SuccessDataResult<List<ProductsWithImagesDto>>(resultList);
+    }
+
+    public IDataResult<List<ProductsWithImagesDto>> GetByCategory(int categoryId)
+    {
+        return new SuccessDataResult<List<ProductsWithImagesDto>>(_productDal.GetProductsWithImages(p => p.CategoryId == categoryId));
+    }
+
+    public IDataResult<Product> GetByProductId(long productId)
+    {
+        return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
+    }
+
+    public long GetProductForAddImage(string productName, long supplierId)
+    {
+        var result = _productDal.Get(p => p.SupplierId == supplierId && p.ProductName == productName);
+        return result.ProductId;
     }
 }

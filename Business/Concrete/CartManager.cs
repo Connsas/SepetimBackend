@@ -5,6 +5,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace Business.Concrete;
 
@@ -33,6 +34,18 @@ public class CartManager : ICartService
         return new SuccessResult(RemovedMessage);
     }
 
+    public IResult DeleteAll(long userId)
+    {
+        var itemsToDelete = GetByUserId(userId);
+
+        foreach (var item in itemsToDelete.Data)
+        {
+            _cartDal.DeleteAll(item.CartId);
+        }
+        
+        return new SuccessResult(RemovedMessage);
+    }
+
     public IResult Update(Cart cart)
     {
         _cartDal.Update(cart);
@@ -42,5 +55,10 @@ public class CartManager : ICartService
     public IDataResult<List<Cart>> GetAll()
     {
         return new SuccessDataResult<List<Cart>>(_cartDal.GetAll());
+    }
+
+    public IDataResult<List<CartItemDto>> GetByUserId(long userId)
+    {
+        return new SuccessDataResult<List<CartItemDto>>(_cartDal.GetCartItemsByUserId(userId));
     }
 }
