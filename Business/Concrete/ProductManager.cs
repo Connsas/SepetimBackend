@@ -64,9 +64,9 @@ public class ProductManager : IProductService
         return new SuccessDataResult<List<ProductsWithImagesDto>>(resultList);
     }
 
-    public IDataResult<List<ProductsWithImagesDto>> GetByCategory(int categoryId)
+    public IDataResult<List<Product>> GetByCategory(int categoryId)
     {
-        return new SuccessDataResult<List<ProductsWithImagesDto>>(_productDal.GetProductsWithImages(p => p.CategoryId == categoryId));
+        return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId));
     }
 
     public IDataResult<Product> GetByProductId(long productId)

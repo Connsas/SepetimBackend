@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Business.Abstract;
+using Core.Entities;
 using Core.Utilities.Results;
 using Core.Utilities.Security.JWT;
 using Entities.Dtos;
@@ -39,8 +40,11 @@ namespace WebAPI.Controllers
                 var token = new JwtSecurityTokenHandler().ReadJwtToken(result.Data.Token);
                 var identity = (ClaimsIdentity)User.Identity;
                 identity.AddClaims(token.Claims);
-                var userId = _userAccountService.GetByMail(userForLoginDto.Email).Data.UserId;
-                LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result,userId);
+                UserAccount user = _userAccountService.GetByMail(userForLoginDto.Email).Data;
+                var userId = user.UserId;
+                var userName = user.Name;
+                var userSurname = user.Surname;
+                LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result, userId, userName, userSurname);
                 return Ok(loginRegisterResult);
             }
 
@@ -58,8 +62,11 @@ namespace WebAPI.Controllers
 
             var registerResult = _authService.RegisterIndividual(individualUserForRegisterDto);
             var result = _authService.CreateAccessToken(registerResult.Data);
-            var userId = _userAccountService.GetByMail(individualUserForRegisterDto.Email).Data.UserId;
-            LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result, userId);
+            var user = _userAccountService.GetByMail(individualUserForRegisterDto.Email).Data;
+            var userId = user.UserId;
+            var userName = user.Name;
+            var userSurname = user.Surname;
+            LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result, userId, userName, userSurname);
             if (result.Success)
             {
                 return Ok(loginRegisterResult);
@@ -78,8 +85,11 @@ namespace WebAPI.Controllers
 
             var registerResult = _authService.RegisterCorporate(corporateUserForRegisterDto);
             var result = _authService.CreateAccessToken(registerResult.Data);
-            var userId = _userAccountService.GetByMail(corporateUserForRegisterDto.Email).Data.UserId;
-            LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result, userId);
+            var user = _userAccountService.GetByMail(corporateUserForRegisterDto.Email).Data;
+            var userId = user.UserId;
+            var userName = user.Name;
+            var userSurname = user.Surname;
+            LoginRegisterResult<AccessToken> loginRegisterResult = new LoginRegisterResult<AccessToken>(result, userId, userName, userSurname);
             if (result.Success)
             {
                 return Ok(loginRegisterResult);

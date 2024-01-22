@@ -19,12 +19,13 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public ActionResult Add(Comment comment)
         {
+            comment.SendDate = DateTime.UtcNow;
             var result = _commentService.Add(comment);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("update")]
@@ -33,9 +34,9 @@ namespace WebAPI.Controllers
             var result = _commentService.Update(comment);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("delete")]
@@ -44,9 +45,9 @@ namespace WebAPI.Controllers
             var result = _commentService.Delete(comment);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet("getall")]
@@ -58,6 +59,17 @@ namespace WebAPI.Controllers
                 return Ok(result.Data);
             }
             return BadRequest(result.Message);
+        }
+
+        [HttpGet("getbyproductid")]
+        public ActionResult GetByProductId(long productId)
+        {
+            var result = _commentService.GetByProductId(productId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

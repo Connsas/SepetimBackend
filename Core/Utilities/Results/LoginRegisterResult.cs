@@ -9,9 +9,11 @@ namespace Core.Utilities.Results
     public class LoginRegisterResult<T>
     {
 
-        public LoginRegisterResult(IDataResult<T> dataResult, long userId)
+        public LoginRegisterResult(IDataResult<T> dataResult, long userId, string userName, string userSurname)
         {
             UserId = userId;
+            UserName = userName;
+            UserSurname = userSurname;
             Data = dataResult.Data;
             Message = dataResult.Message;
             Success = dataResult.Success;
@@ -21,5 +23,8 @@ namespace Core.Utilities.Results
         public string Message { get; }
         public bool Success { get; }
         public long UserId { get;}
+
+        public string UserName { get; }
+        public string UserSurname { get; }
     }
 }

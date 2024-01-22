@@ -39,6 +39,11 @@ public class CommentManager : ICommentService
         return new SuccessResult(UpdatedMessage);
     }
 
+    public IDataResult<List<Comment>> GetByProductId(long productId)
+    {
+        return new SuccessDataResult<List<Comment>>(_commentDal.GetAll(c => c.ProductId == productId));
+    }
+
     public IDataResult<List<Comment>> GetAll()
     {
         return new SuccessDataResult<List<Comment>>(_commentDal.GetAll());

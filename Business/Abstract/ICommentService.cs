@@ -9,4 +9,5 @@ public interface ICommentService
     IResult Delete(Comment comment);
     IResult Update(Comment comment);
     IDataResult<List<Comment>> GetAll();
+    IDataResult<List<Comment>> GetByProductId(long productId);
 }
