@@ -5,6 +5,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace Business.Concrete;
 
@@ -39,9 +40,9 @@ public class CommentManager : ICommentService
         return new SuccessResult(UpdatedMessage);
     }
 
-    public IDataResult<List<Comment>> GetByProductId(long productId)
+    public IDataResult<List<CommentForShowDto>> GetByProductId(long productId)
     {
-        return new SuccessDataResult<List<Comment>>(_commentDal.GetAll(c => c.ProductId == productId));
+        return new SuccessDataResult<List<CommentForShowDto>>(_commentDal.GetCommentDto(productId));
     }
 
     public IDataResult<List<Comment>> GetAll()

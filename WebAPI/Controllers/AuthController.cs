@@ -28,6 +28,11 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public ActionResult Login(UserForLoginDto userForLoginDto)
         {
+            var userToCheck = _userAccountService.GetByMail(userForLoginDto.Email);
+            if (userToCheck == null)
+            {
+                return BadRequest(userToCheck.Message);
+            }
             var userToLogin = _authService.Login(userForLoginDto);
             if (!userToLogin.Success)
             {

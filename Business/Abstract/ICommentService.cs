@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace Business.Abstract;
 
@@ -9,5 +10,5 @@ public interface ICommentService
     IResult Delete(Comment comment);
     IResult Update(Comment comment);
     IDataResult<List<Comment>> GetAll();
-    IDataResult<List<Comment>> GetByProductId(long productId);
+    IDataResult<List<CommentForShowDto>> GetByProductId(long productId);
 }
